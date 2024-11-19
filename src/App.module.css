@@ -1,0 +1,88 @@
+:root {
+    --submit-button: hsl(210, 30%, 70%);
+}
+
+.home {
+    display: flex;
+    flex-direction: column;
+    gap: 2.3rem;
+    min-height: 100vh;
+    padding: 3rem;
+}
+
+.title {
+    font-size: 2.5rem;
+    color: hsl(58, 100%, 100%);
+}
+
+.form {
+    width: fit-content;
+    display: flex;
+    align-items: center;
+    gap: 1.7rem;
+    background-color: rgba(255, 255, 255, 0.103);
+    padding: 1rem;
+    border-radius: 4px;
+}
+
+.inputs {
+    display: flex;
+    gap: 1.2rem;
+}
+
+.inputContainer {
+    width: fit-content;
+    border-radius: 3px;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.label {
+    font-size: 1rem;
+    color: #555;
+}
+
+.inputContainer input {
+    padding: 0.2rem 0.7rem;
+    background-color: transparent;
+    border: none;
+    border-bottom: 1px solid #fff;
+    color: #fff;
+    outline: none;
+}
+
+.submitButton {
+    background-color: var(--submit-button);
+    color: white;
+    font-weight: bold;
+    padding: 0.3rem 2rem;
+    border: 2px solid transparent;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: 0.2s ease-out;
+}
+
+.submitButton:hover {
+    transform: translateY(-0.2rem);
+    background-color: transparent;
+    border-color: var(--submit-button);
+    color: var(--submit-button);
+}
+
+.chartsContainer {
+    display: grid;
+    gap: 2rem;
+}
+
+/* 
+.chart {
+    width: 100% !important;
+    border: 1px solid white;
+} */
+
+canvas {
+    padding: 2rem;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 4px;
+}
