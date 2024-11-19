@@ -1,5 +1,5 @@
 :root {
-    --submit-button: hsl(210, 30%, 70%);
+    --submit-button: hsl(210, 70%, 70%);
 }
 
 .home {
@@ -50,14 +50,19 @@
     border-bottom: 1px solid #fff;
     color: #fff;
     outline: none;
+    transition: 0.15s;
+}
+
+.inputContainer input:focus {
+    border-color: var(--submit-button);
 }
 
 .submitButton {
-    background-color: var(--submit-button);
-    color: white;
+    background-color: transparent;
+    color: var(--submit-button);
     font-weight: bold;
     padding: 0.3rem 2rem;
-    border: 2px solid transparent;
+    border: 2px solid var(--submit-button);
     border-radius: 4px;
     cursor: pointer;
     transition: 0.2s ease-out;
@@ -65,21 +70,49 @@
 
 .submitButton:hover {
     transform: translateY(-0.2rem);
-    background-color: transparent;
+    background-color: var(--submit-button);
     border-color: var(--submit-button);
-    color: var(--submit-button);
+    color: white;
 }
 
 .chartsContainer {
     display: grid;
-    gap: 2rem;
+    gap: 2.4rem;
 }
 
-/* 
-.chart {
-    width: 100% !important;
-    border: 1px solid white;
-} */
+.roiContainer {
+    display: grid;
+    gap: 1rem;
+}
+
+.chartButtons {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.chartButton,
+.activeButton {
+    background-color: transparent;
+    color: white;
+    font-weight: bold;
+    padding: 0.3rem 2rem;
+    border: 2px solid white;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: 0.15s ease-out;
+}
+
+.chartButton:hover,
+.activeButton:hover {
+    transform: translateY(-0.2rem);
+    background-color: white;
+    color: black;
+}
+
+.activeButton {
+    background-color: white;
+    color: black;
+}
 
 canvas {
     padding: 2rem;

@@ -1,15 +1,16 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import {
     Chart as ChartJS,
     CategoryScale,
     LinearScale,
     PointElement,
     LineElement,
+    BarElement,
     Title,
     Tooltip,
     Legend,
 } from "chart.js";
-import { Line } from "react-chartjs-2";
+import { Line, Bar } from "react-chartjs-2";
 import styles from "./App.module.css";
 
 ChartJS.register(
@@ -17,16 +18,20 @@ ChartJS.register(
     LinearScale,
     PointElement,
     LineElement,
+    BarElement,
     Title,
     Tooltip,
     Legend
 );
 
 const App = () => {
-    const [area, setArea] = useState(20); // Área em m²
-    const [dailyConsumption, setDailyConsumption] = useState(30); // Consumo diário em kWh
-    const [solarRoiData, setSolarRoiData] = useState(null); // Dados do ROI Solar
-    const [hydroRoiData, setHydroRoiData] = useState(null); // Dados do ROI Hidrelétrica
+    const [area, setArea] = useState(20);
+    const [dailyConsumption, setDailyConsumption] = useState(30);
+    const [solarRoiData, setSolarRoiData] = useState(null);
+    const [hydroRoiData, setHydroRoiData] = useState(null);
+    const [solarChartType, setSolarChartType] = useState("line");
+    const [hydroChartType, setHydroChartType] = useState("line");
+    const [comparisonChartType, setComparisonChartType] = useState("line");
 
     const calculateROI = (
         initialCost,
@@ -39,10 +44,10 @@ const App = () => {
         let cumulativeSavings = 0;
 
         for (let year = 1; year <= duration; year++) {
-            annualSavings *= 1 + growthRate; // Crescimento anual
-            const netSavings = annualSavings - maintenanceCost; // Economia líquida
-            cumulativeSavings += Math.max(netSavings, 0); // Acumular apenas valores positivos
-            const roi = cumulativeSavings - initialCost; // ROI acumulado
+            annualSavings *= 1 + growthRate;
+            const netSavings = annualSavings - maintenanceCost;
+            cumulativeSavings += Math.max(netSavings, 0);
+            const roi = cumulativeSavings - initialCost;
             roiData.push({ year, roi });
         }
 
@@ -54,9 +59,9 @@ const App = () => {
         let cumulativeCost = 0;
 
         for (let year = 1; year <= duration; year++) {
-            if (year > 1) annualCost *= 1 + growthRate; // Aplicar inflação anual
-            cumulativeCost += annualCost; // Acumular custos anuais
-            const roi = -cumulativeCost; // ROI é sempre negativo
+            if (year > 1) annualCost *= 1 + growthRate;
+            cumulativeCost += annualCost;
+            const roi = -cumulativeCost;
             roiData.push({ year, roi });
         }
 
@@ -66,24 +71,22 @@ const App = () => {
     const handleSimulate = (event) => {
         event.preventDefault();
 
-        // Parâmetros fixos
-        const solarIrradiation = 4.5; // kWh/m²/dia (média Brasil)
-        const panelEfficiency = 0.18; // 18% eficiência
-        const systemLoss = 0.85; // 85% eficiência do sistema após perdas
-        const solarCostPerKWp = 6000; // R$/kWp
-        const electricityCost = 0.9; // R$/kWh
-        const solarMaintenancePerKWp = 200; // R$/ano/kWp
+        const solarIrradiation = 4.5;
+        const panelEfficiency = 0.18;
+        const systemLoss = 0.85;
+        const solarCostPerKWp = 6000;
+        const electricityCost = 0.9;
+        const solarMaintenancePerKWp = 200;
 
-        // Energia solar
-        const solarCapacity = area * panelEfficiency * systemLoss; // kWp instalados
-        const solarDailyGeneration = solarCapacity * solarIrradiation; // Geração diária (kWh)
+        const solarCapacity = area * panelEfficiency * systemLoss;
+        const solarDailyGeneration = solarCapacity * solarIrradiation;
         const solarAnnualSavings = Math.min(
             solarDailyGeneration * 365 * electricityCost,
             dailyConsumption * 365 * electricityCost
-        ); // Economia anual
-        const solarCost = solarCapacity * solarCostPerKWp; // Custo inicial
-        const solarDuration = 25; // Vida útil (anos)
-        const solarGrowthRate = 0.02; // Crescimento anual na economia
+        );
+        const solarCost = solarCapacity * solarCostPerKWp;
+        const solarDuration = 25;
+        const solarGrowthRate = 0.02;
         const solarRoi = calculateROI(
             solarCost,
             solarAnnualSavings,
@@ -92,10 +95,9 @@ const App = () => {
             solarGrowthRate
         );
 
-        // Energia hidrelétrica
-        const hydroAnnualCost = dailyConsumption * 365 * electricityCost; // Custo anual
-        const hydroDuration = 25; // Simulado por 25 anos
-        const hydroGrowthRate = 0.08; // Inflação de energia
+        const hydroAnnualCost = dailyConsumption * 365 * electricityCost;
+        const hydroDuration = 25;
+        const hydroGrowthRate = 0.08;
         const hydroRoi = calculateROIHydro(
             hydroAnnualCost,
             hydroDuration,
@@ -152,6 +154,13 @@ const App = () => {
     return (
         <div className={styles.home}>
             <h1 className={styles.title}>Simulador de ROI de Energia</h1>
+            <p>
+                Através deste simulador, você pode comparar o retorno sobre
+                investimento (ROI) de sistemas de energia solar e hidrelétrica.
+                Com base nos dados fornecidos sobre área disponível e consumo
+                diário, será possível entender como cada opção pode influenciar
+                seus custos ao longo do tempo.
+            </p>
             <form className={styles.form} onSubmit={handleSimulate}>
                 <div className={styles.inputs}>
                     <div className={styles.inputContainer}>
@@ -167,13 +176,13 @@ const App = () => {
                     </div>
 
                     <div className={styles.inputContainer}>
-                        <label htmlFor="daily-consuption">
+                        <label htmlFor="daily-consumption">
                             <strong>Consumo diário (kWh):</strong>
                         </label>
                         <input
                             type="number"
                             value={dailyConsumption}
-                            id="daily-consuption"
+                            id="daily-consumption"
                             onChange={(e) =>
                                 setDailyConsumption(Number(e.target.value))
                             }
@@ -187,35 +196,124 @@ const App = () => {
             </form>
 
             {solarRoiData && hydroRoiData && (
-                <div className={styles.chartsContainer}>
-                    <Line
-                        data={solarChartData}
-                        options={{
-                            responsive: true,
-                            plugins: {
-                                legend: { position: "top" },
-                            },
-                        }}
-                    />
-                    <Line
-                        data={hydroChartData}
-                        options={{
-                            responsive: true,
-                            plugins: {
-                                legend: { position: "top" },
-                            },
-                        }}
-                    />
-                    <Line
-                        data={comparisonChartData}
-                        options={{
-                            responsive: true,
-                            plugins: {
-                                legend: { position: "top" },
-                            },
-                        }}
-                    />
-                </div>
+                <section className={styles.chartsContainer}>
+                    {/* Solar ROI */}
+                    <div className={styles.roiContainer}>
+                        <h2>ROI Energia Solar</h2>
+                        <div className={styles.chartButtons}>
+                            <button
+                                className={
+                                    solarChartType === "line"
+                                        ? styles.activeButton
+                                        : styles.chartButton
+                                }
+                                onClick={() => setSolarChartType("line")}
+                            >
+                                Linha
+                            </button>
+                            <button
+                                className={
+                                    solarChartType === "bar"
+                                        ? styles.activeButton
+                                        : styles.chartButton
+                                }
+                                onClick={() => setSolarChartType("bar")}
+                            >
+                                Barra
+                            </button>
+                        </div>
+                        {solarChartType === "line" && (
+                            <Line
+                                data={solarChartData}
+                                options={{ responsive: true }}
+                            />
+                        )}
+                        {solarChartType === "bar" && (
+                            <Bar
+                                data={solarChartData}
+                                options={{ responsive: true }}
+                            />
+                        )}
+                    </div>
+
+                    {/* Hydro ROI */}
+                    <div className={styles.roiContainer}>
+                        <h2>ROI Energia Hidrelétrica</h2>
+                        <div className={styles.chartButtons}>
+                            <button
+                                className={
+                                    hydroChartType === "line"
+                                        ? styles.activeButton
+                                        : styles.chartButton
+                                }
+                                onClick={() => setHydroChartType("line")}
+                            >
+                                Linha
+                            </button>
+                            <button
+                                className={
+                                    hydroChartType === "bar"
+                                        ? styles.activeButton
+                                        : styles.chartButton
+                                }
+                                onClick={() => setHydroChartType("bar")}
+                            >
+                                Barra
+                            </button>
+                        </div>
+                        {hydroChartType === "line" && (
+                            <Line
+                                data={hydroChartData}
+                                options={{ responsive: true }}
+                            />
+                        )}
+                        {hydroChartType === "bar" && (
+                            <Bar
+                                data={hydroChartData}
+                                options={{ responsive: true }}
+                            />
+                        )}
+                    </div>
+
+                    {/* Comparison ROI */}
+                    <div className={styles.roiContainer}>
+                        <h2>Comparação entre as duas</h2>
+                        <div className={styles.chartButtons}>
+                            <button
+                                className={
+                                    comparisonChartType === "line"
+                                        ? styles.activeButton
+                                        : styles.chartButton
+                                }
+                                onClick={() => setComparisonChartType("line")}
+                            >
+                                Linha
+                            </button>
+                            <button
+                                className={
+                                    comparisonChartType === "bar"
+                                        ? styles.activeButton
+                                        : styles.chartButton
+                                }
+                                onClick={() => setComparisonChartType("bar")}
+                            >
+                                Barra
+                            </button>
+                        </div>
+                        {comparisonChartType === "line" && (
+                            <Line
+                                data={comparisonChartData}
+                                options={{ responsive: true }}
+                            />
+                        )}
+                        {comparisonChartType === "bar" && (
+                            <Bar
+                                data={comparisonChartData}
+                                options={{ responsive: true }}
+                            />
+                        )}
+                    </div>
+                </section>
             )}
         </div>
     );
