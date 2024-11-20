@@ -12,6 +12,8 @@ import {
 } from "chart.js";
 import { Line, Bar } from "react-chartjs-2";
 import styles from "./App.module.css";
+import Form from "./components/Form/Form";
+import ChartComponent from "./components/ChartComponent/ChartComponent";
 
 ChartJS.register(
     CategoryScale,
@@ -161,158 +163,35 @@ const App = () => {
                 diário, será possível entender como cada opção pode influenciar
                 seus custos ao longo do tempo.
             </p>
-            <form className={styles.form} onSubmit={handleSimulate}>
-                <div className={styles.inputs}>
-                    <div className={styles.inputContainer}>
-                        <label htmlFor="area">
-                            <strong>Área disponível (m²):</strong>
-                        </label>
-                        <input
-                            type="number"
-                            value={area}
-                            id="area"
-                            onChange={(e) => setArea(Number(e.target.value))}
-                        />
-                    </div>
 
-                    <div className={styles.inputContainer}>
-                        <label htmlFor="daily-consumption">
-                            <strong>Consumo diário (kWh):</strong>
-                        </label>
-                        <input
-                            type="number"
-                            value={dailyConsumption}
-                            id="daily-consumption"
-                            onChange={(e) =>
-                                setDailyConsumption(Number(e.target.value))
-                            }
-                        />
-                    </div>
-                </div>
-
-                <button type="submit" className={styles.submitButton}>
-                    Simular
-                </button>
-            </form>
+            <Form
+                area={area}
+                setArea={setArea}
+                dailyConsumption={dailyConsumption}
+                setDailyConsumption={setDailyConsumption}
+                handleSimulate={handleSimulate}
+            />
 
             {solarRoiData && hydroRoiData && (
                 <section className={styles.chartsContainer}>
-                    {/* Solar ROI */}
-                    <div className={styles.roiContainer}>
-                        <h2>ROI Energia Solar</h2>
-                        <div className={styles.chartButtons}>
-                            <button
-                                className={
-                                    solarChartType === "line"
-                                        ? styles.activeButton
-                                        : styles.chartButton
-                                }
-                                onClick={() => setSolarChartType("line")}
-                            >
-                                Linha
-                            </button>
-                            <button
-                                className={
-                                    solarChartType === "bar"
-                                        ? styles.activeButton
-                                        : styles.chartButton
-                                }
-                                onClick={() => setSolarChartType("bar")}
-                            >
-                                Barra
-                            </button>
-                        </div>
-                        {solarChartType === "line" && (
-                            <Line
-                                data={solarChartData}
-                                options={{ responsive: true }}
-                            />
-                        )}
-                        {solarChartType === "bar" && (
-                            <Bar
-                                data={solarChartData}
-                                options={{ responsive: true }}
-                            />
-                        )}
-                    </div>
-
-                    {/* Hydro ROI */}
-                    <div className={styles.roiContainer}>
-                        <h2>ROI Energia Hidrelétrica</h2>
-                        <div className={styles.chartButtons}>
-                            <button
-                                className={
-                                    hydroChartType === "line"
-                                        ? styles.activeButton
-                                        : styles.chartButton
-                                }
-                                onClick={() => setHydroChartType("line")}
-                            >
-                                Linha
-                            </button>
-                            <button
-                                className={
-                                    hydroChartType === "bar"
-                                        ? styles.activeButton
-                                        : styles.chartButton
-                                }
-                                onClick={() => setHydroChartType("bar")}
-                            >
-                                Barra
-                            </button>
-                        </div>
-                        {hydroChartType === "line" && (
-                            <Line
-                                data={hydroChartData}
-                                options={{ responsive: true }}
-                            />
-                        )}
-                        {hydroChartType === "bar" && (
-                            <Bar
-                                data={hydroChartData}
-                                options={{ responsive: true }}
-                            />
-                        )}
-                    </div>
-
-                    {/* Comparison ROI */}
-                    <div className={styles.roiContainer}>
-                        <h2>Comparação entre as duas</h2>
-                        <div className={styles.chartButtons}>
-                            <button
-                                className={
-                                    comparisonChartType === "line"
-                                        ? styles.activeButton
-                                        : styles.chartButton
-                                }
-                                onClick={() => setComparisonChartType("line")}
-                            >
-                                Linha
-                            </button>
-                            <button
-                                className={
-                                    comparisonChartType === "bar"
-                                        ? styles.activeButton
-                                        : styles.chartButton
-                                }
-                                onClick={() => setComparisonChartType("bar")}
-                            >
-                                Barra
-                            </button>
-                        </div>
-                        {comparisonChartType === "line" && (
-                            <Line
-                                data={comparisonChartData}
-                                options={{ responsive: true }}
-                            />
-                        )}
-                        {comparisonChartType === "bar" && (
-                            <Bar
-                                data={comparisonChartData}
-                                options={{ responsive: true }}
-                            />
-                        )}
-                    </div>
+                    <ChartComponent
+                        title="ROI Energia Solar"
+                        chartData={solarChartData}
+                        chartType={solarChartType}
+                        setChartType={setSolarChartType}
+                    />
+                    <ChartComponent
+                        title="ROI Energia Hidrelétrica"
+                        chartData={hydroChartData}
+                        chartType={hydroChartType}
+                        setChartType={setHydroChartType}
+                    />
+                    <ChartComponent
+                        title="Comparação entre as duas"
+                        chartData={comparisonChartData}
+                        chartType={comparisonChartType}
+                        setChartType={setComparisonChartType}
+                    />
                 </section>
             )}
         </div>
