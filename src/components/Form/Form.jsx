@@ -5,8 +5,8 @@ function Form({ area, setArea, dailyConsumption, setDailyConsumption, handleSimu
         <form className={styles.form} onSubmit={handleSimulate}>
             <div className={styles.inputs}>
                 <div className={styles.inputContainer}>
-                    <label htmlFor="area">
-                        <strong>Área disponível (m²):</strong>
+                    <label htmlFor="area" className={styles.label}>
+                        Área disponível (m²):
                     </label>
                     <input
                         type="number"
@@ -17,8 +17,8 @@ function Form({ area, setArea, dailyConsumption, setDailyConsumption, handleSimu
                 </div>
 
                 <div className={styles.inputContainer}>
-                    <label htmlFor="daily-consumption">
-                        <strong>Consumo diário (kWh):</strong>
+                    <label htmlFor="daily-consumption" className={styles.label}>
+                        Consumo diário (kWh):
                     </label>
                     <input
                         type="number"

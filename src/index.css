@@ -3,10 +3,6 @@
 :root {
     line-height: 1.5;
 
-    padding: 0;
-    margin: 0;
-    box-sizing: border-box;
-
     color: rgba(255, 255, 255, 0.87);
     background-color: hsl(210, 7%, 14%);
 
@@ -18,4 +14,7 @@
 
 * {
     font-family: "Poppins", "Montserrat", Arial, Helvetica, sans-serif;
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
 }

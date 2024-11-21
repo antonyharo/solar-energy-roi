@@ -1,0 +1,52 @@
+:root {
+    --pros: hsl(144, 100%, 50%);
+    --cons: hsl(0, 100%, 77%);
+}
+
+.feedbackContainer {
+    display: grid;
+    gap: 2rem;
+}
+
+.pros,
+.cons {
+    padding: 1rem 2rem;
+    border-left: 3px solid;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    transition: 0.1s ease-out;
+    color: #7a7a7a;
+}
+
+.pros h2,
+.cons h2 {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.pros h2 {
+    color: var(--pros);
+}
+
+.cons h2 {
+    color: var(--cons);
+}
+
+.pros:hover,
+.cons:hover {
+    transform: translateX(0.2rem);
+}
+
+h2 {
+    margin: 0;
+}
+
+.pros {
+    border-color: var(--pros);
+}
+
+.cons {
+    border-color: var(--cons);
+}

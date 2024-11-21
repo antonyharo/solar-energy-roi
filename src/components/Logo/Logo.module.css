@@ -1,0 +1,19 @@
+h1 {
+    display: flex;
+    gap: 0.6rem;
+    align-items: center;
+}
+
+.logo svg {
+    color: yellow;
+    animation: rotate360 10s infinite linear;
+}
+
+@keyframes rotate360 {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}

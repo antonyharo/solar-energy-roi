@@ -1,59 +1,68 @@
+:root {
+    --submit-button: hsl(65, 100%, 69%);
+}
+
 .form {
-    width: fit-content;
+    width: 100%;
     display: flex;
-    align-items: center;
+    align-items: stretch;
+    justify-content: space-between;
     gap: 1.7rem;
-    background-color: rgba(255, 255, 255, 0.103);
-    padding: 1rem;
+    background-color: rgba(255, 255, 255, 0.05);
+    box-shadow: -2px 2px 4px hsla(0, 0%, 0%, 0.2);
+    padding: 1rem 2rem;
     border-radius: 4px;
 }
 
 .inputs {
-    display: flex;
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
     gap: 1.2rem;
 }
 
 .inputContainer {
-    width: fit-content;
-    border-radius: 3px;
     display: flex;
-    align-items: center;
-    gap: 1rem;
+    flex-direction: column;
+    gap: 0.4rem;
 }
 
 .label {
     font-size: 1rem;
-    color: #555;
+    color: var(--submit-button);
+    font-weight: bold;
+    margin-left: 0.7rem;
+    transition: 0.5s;
 }
 
 .inputContainer input {
+    width: 100%;
     padding: 0.2rem 0.7rem;
     background-color: transparent;
     border: none;
-    border-bottom: 1px solid #fff;
-    color: #fff;
+    border-bottom: 3px solid #555;
+    color: #999 ;
     outline: none;
-    transition: 0.15s;
+    transition: 0.5s;
 }
 
-.inputContainer input:focus {
+/* .inputContainer input:focus {
     border-color: var(--submit-button);
-}
+} */
 
 .submitButton {
     background-color: transparent;
     color: var(--submit-button);
     font-weight: bold;
-    padding: 0.3rem 2rem;
+    padding: 0.3rem 3rem;
     border: 2px solid var(--submit-button);
     border-radius: 4px;
     cursor: pointer;
-    transition: 0.2s ease-out;
+    transition: 0.2s;
 }
 
 .submitButton:hover {
-    transform: translateY(-0.2rem);
     background-color: var(--submit-button);
     border-color: var(--submit-button);
-    color: white;
+    color: black;
 }

@@ -1,13 +1,15 @@
-:root {
-    --submit-button: hsl(210, 70%, 70%);
-}
-
 .home {
     display: flex;
     flex-direction: column;
-    gap: 2.3rem;
+    gap: 4rem;
     min-height: 100vh;
-    padding: 3rem;
+    padding: 4rem;
+}
+
+.home hr {
+    border: none;
+    background-color: #7a7a7a;
+    height: 2px;
 }
 
 .title {
@@ -15,7 +17,10 @@
     color: hsl(58, 100%, 100%);
 }
 
-.chartsContainer {
+.chartsContainer,
+.feedbackContainer {
+    width: 100%;
     display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(40vw, 1fr));
     gap: 2.4rem;
 }

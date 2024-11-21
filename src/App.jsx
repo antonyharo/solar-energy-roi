@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
     Chart as ChartJS,
     CategoryScale,
@@ -10,10 +10,12 @@ import {
     Tooltip,
     Legend,
 } from "chart.js";
-import { Line, Bar } from "react-chartjs-2";
 import styles from "./App.module.css";
+import Header from "./components/Header/Header";
 import Form from "./components/Form/Form";
+import Feedback from "./components/Feedback/Feedback";
 import ChartComponent from "./components/ChartComponent/ChartComponent";
+import Footer from "./components/Footer/Footer";
 
 ChartJS.register(
     CategoryScale,
@@ -116,8 +118,9 @@ const App = () => {
             {
                 label: "ROI Energia Solar (R$)",
                 data: solarRoiData.map((d) => d.roi),
-                borderColor: "rgba(75, 192, 192, 1)",
-                backgroundColor: "rgba(75, 192, 192, 0.2)",
+                borderColor: "hsla(54, 100%, 66%, 0.7)",
+                backgroundColor: "hsla(54, 100%, 66%, 0.3)",
+                borderWidth: 2,
             },
         ],
     };
@@ -128,8 +131,9 @@ const App = () => {
             {
                 label: "ROI Hidrelétrica (R$)",
                 data: hydroRoiData.map((d) => d.roi),
-                borderColor: "rgba(255, 99, 132, 1)",
-                backgroundColor: "rgba(255, 99, 132, 0.2)",
+                borderColor: "hsla(212, 100%, 66%, 0.7)",
+                backgroundColor: "hsla(212, 100%, 66%, 0.3)",
+                borderWidth: 2,
             },
         ],
     };
@@ -141,21 +145,27 @@ const App = () => {
                 {
                     label: "ROI Energia Solar (R$)",
                     data: solarRoiData.map((d) => d.roi),
-                    borderColor: "rgba(75, 192, 192, 1)",
-                    backgroundColor: "rgba(75, 192, 192, 0.2)",
+                    borderColor: "hsla(54, 100%, 66%, 0.7)",
+                    backgroundColor: "hsla(54, 100%, 66%, 0.3)",
+                    borderWidth: 2,
                 },
                 {
                     label: "ROI Hidrelétrica (R$)",
                     data: hydroRoiData.map((d) => d.roi),
-                    borderColor: "rgba(255, 99, 132, 1)",
-                    backgroundColor: "rgba(255, 99, 132, 0.2)",
+                    borderColor: "hsla(212, 100%, 66%, 0.7)",
+                    backgroundColor: "hsla(212, 100%, 66%, 0.3)",
+                    borderWidth: 2,
                 },
             ],
         };
 
     return (
         <div className={styles.home}>
-            <h1 className={styles.title}>Simulador de ROI de Energia</h1>
+            <Header />
+
+            <h1 className={styles.title}>
+                Simulador de ROI de Energia Solar x Hidrelétrica
+            </h1>
             <p>
                 Através deste simulador, você pode comparar o retorno sobre
                 investimento (ROI) de sistemas de energia solar e hidrelétrica.
@@ -172,28 +182,39 @@ const App = () => {
                 handleSimulate={handleSimulate}
             />
 
+            <hr />
+
             {solarRoiData && hydroRoiData && (
-                <section className={styles.chartsContainer}>
-                    <ChartComponent
-                        title="ROI Energia Solar"
-                        chartData={solarChartData}
-                        chartType={solarChartType}
-                        setChartType={setSolarChartType}
-                    />
-                    <ChartComponent
-                        title="ROI Energia Hidrelétrica"
-                        chartData={hydroChartData}
-                        chartType={hydroChartType}
-                        setChartType={setHydroChartType}
-                    />
-                    <ChartComponent
-                        title="Comparação entre as duas"
-                        chartData={comparisonChartData}
-                        chartType={comparisonChartType}
-                        setChartType={setComparisonChartType}
-                    />
-                </section>
+                <>
+                    <div className={styles.feedbackContainer}>
+                        {" "}
+                        <ChartComponent
+                            title="Comparação entre as duas"
+                            chartData={comparisonChartData}
+                            chartType={comparisonChartType}
+                            setChartType={setComparisonChartType}
+                        />
+                        <Feedback />
+                    </div>
+                    <hr />
+                    <section className={styles.chartsContainer}>
+                        <ChartComponent
+                            title="ROI Energia Solar"
+                            chartData={solarChartData}
+                            chartType={solarChartType}
+                            setChartType={setSolarChartType}
+                        />
+                        <ChartComponent
+                            title="ROI Energia Hidrelétrica"
+                            chartData={hydroChartData}
+                            chartType={hydroChartType}
+                            setChartType={setHydroChartType}
+                        />
+                    </section>
+                </>
             )}
+
+            <Footer />
         </div>
     );
 };
