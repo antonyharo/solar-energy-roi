@@ -16,6 +16,7 @@ import Form from "./components/Form/Form";
 import Feedback from "./components/Feedback/Feedback";
 import ChartComponent from "./components/ChartComponent/ChartComponent";
 import Footer from "./components/Footer/Footer";
+import { gemini } from "./utils/api";
 
 ChartJS.register(
     CategoryScale,
@@ -36,6 +37,7 @@ const App = () => {
     const [solarChartType, setSolarChartType] = useState("line");
     const [hydroChartType, setHydroChartType] = useState("line");
     const [comparisonChartType, setComparisonChartType] = useState("line");
+    const [geminiData, setGeminiData] = useState(null)
 
     const calculateROI = (
         initialCost,
@@ -72,7 +74,7 @@ const App = () => {
         return roiData;
     };
 
-    const handleSimulate = (event) => {
+    const handleSimulate = async (event) => {
         event.preventDefault();
 
         const solarIrradiation = 4.5;
@@ -91,6 +93,8 @@ const App = () => {
         const solarCost = solarCapacity * solarCostPerKWp;
         const solarDuration = 25;
         const solarGrowthRate = 0.02;
+            
+        // parametros
         const solarRoi = calculateROI(
             solarCost,
             solarAnnualSavings,
@@ -110,6 +114,19 @@ const App = () => {
 
         setSolarRoiData(solarRoi);
         setHydroRoiData(hydroRoi);
+
+        await fetchGemini({
+            cost: solarCost,
+            annualSavings: solarAnnualSavings,
+            duration: solarDuration,
+            maintenance: solarMaintenancePerKWp * solarCapacity,
+            capacity: solarCapacity,
+            growthRate: solarGrowthRate,
+        }, {
+            annualCost: hydroAnnualCost,
+            duration: hydroDuration,
+            growthRate: hydroGrowthRate,
+        });        
     };
 
     const solarChartData = solarRoiData && {
@@ -159,20 +176,44 @@ const App = () => {
             ],
         };
 
+    const fetchGemini =  async (solarData, hydroData) => {
+        const response = await gemini(
+            {
+                cost: solarData.cost,
+                annualSavings: solarData.annualSavings,
+                duration: solarData.duration,
+                maintenance: solarData.maintenance,
+                capacity: solarData.capacity,
+                growthRate: solarData.growthRate,
+            },
+            {
+                annualCost: hydroData.annualCost,
+                duration: hydroData.duration,
+                growthRate: hydroData.growthRate,
+            }
+        );
+
+        setGeminiData(response);
+        console.log(response); // Teste
+    };
+
     return (
         <div className={styles.home}>
             <Header />
 
-            <h1 className={styles.title}>
-                Simulador de ROI de Energia Solar x Hidrelétrica
-            </h1>
-            <p>
-                Através deste simulador, você pode comparar o retorno sobre
-                investimento (ROI) de sistemas de energia solar e hidrelétrica.
-                Com base nos dados fornecidos sobre área disponível e consumo
-                diário, será possível entender como cada opção pode influenciar
-                seus custos ao longo do tempo.
-            </p>
+            <div className={styles.textContainer}>
+                <h1>
+                    Simulador de ROI de <span>Energia Solar</span> x{" "}
+                    <span>Hidrelétrica</span>
+                </h1>
+                <p>
+                    Através deste simulador, você pode comparar o retorno sobre
+                    investimento (ROI) de sistemas de energia solar e
+                    hidrelétrica. Com base nos dados fornecidos sobre área
+                    disponível e consumo diário, será possível entender como
+                    cada opção pode influenciar seus custos ao longo do tempo.
+                </p>
+            </div>
 
             <Form
                 area={area}
@@ -194,7 +235,9 @@ const App = () => {
                             chartType={comparisonChartType}
                             setChartType={setComparisonChartType}
                         />
-                        <Feedback />
+                        <Feedback 
+                            geminiData={geminiData}
+                        />
                     </div>
                     <hr />
                     <section className={styles.chartsContainer}>
