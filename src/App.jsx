@@ -137,11 +137,13 @@ const App = () => {
                 maintenance: solarMaintenancePerKWp * solarCapacity,
                 capacity: solarCapacity,
                 growthRate: solarGrowthRate,
+                dailyConsumption: dailyConsumption,
             },
             {
                 annualCost: hydroAnnualCost,
                 duration: hydroDuration,
                 growthRate: hydroGrowthRate,
+                dailyConsumption: dailyConsumption,
             }
         );
     };
@@ -193,29 +195,8 @@ const App = () => {
             ],
         };
 
-    const formatSolarData = (data) => ({
-        cost: data.cost,
-        annualSavings: data.annualSavings,
-        duration: data.duration,
-        maintenance: data.maintenance,
-        capacity: data.capacity,
-        growthRate: data.growthRate,
-    });
-
-    const formatHydroData = (data) => ({
-        annualCost: data.annualCost,
-        duration: data.duration,
-        maintenance: data.maintenance,
-        capacity: data.capacity,
-        growthRate: data.growthRate,
-    });
-
     const fetchGemini = async (solarData, hydroData) => {
         try {
-            // Dados formatados
-            const formattedSolarData = formatSolarData(solarData);
-            const formattedHydroData = formatHydroData(hydroData);
-
             // Solicitações assíncronas
             const [
                 solarProsResponse,
@@ -226,24 +207,17 @@ const App = () => {
             ] = await Promise.all([
                 gemini(
                     "prós do uso da energia solar (sem necessidade de colocar 'Energia solar:' ao inciar a resposta)",
-                    formattedSolarData
+                    solarData
                 ),
-                gemini("contras do uso da energia solar", formattedSolarData),
-                gemini(
-                    "prós do uso da energia hidrelétrica",
-                    formattedHydroData
-                ),
-                gemini(
-                    "contras do uso da energia hidrelétrica",
-                    formattedHydroData
-                ),
+                gemini("contras do uso da energia solar", solarData),
+                gemini("prós do uso da energia hidrelétrica", hydroData),
+                gemini("contras do uso da energia hidrelétrica", hydroData),
                 gemini(
                     "conclusão entre o uso da energia solar e o uso da energia hidrelétrica proveniente das grande redes nacionais",
-                    formattedSolarData
+                    solarData
                 ),
             ]);
 
-            // Resposta consolidada
             const response = {
                 solar: {
                     pros: solarProsResponse,
@@ -256,13 +230,11 @@ const App = () => {
                 conclusion: conclusionResponse,
             };
 
-            setGeminiData(response); // Atualiza o estado
-            console.log(response); // Teste
-
-            // return response; // Retorno opcional para uso posterior
+            setGeminiData(response);
+            console.log(response);
         } catch (error) {
             console.error("Erro ao buscar dados do Gemini:", error);
-            throw error; // Propaga o erro para manipulação em outro lugar, se necessário
+            throw error;
         } finally {
             setLoadingGemini(false);
         }
