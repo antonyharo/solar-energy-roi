@@ -17,6 +17,7 @@ export const gemini = async (context, roi, dailyConsumption) => {
     - Avalie o alto investimento x consumo diário, 8kWh diários para um custo elevadíssimo de instalação de paíneis solares em uma área enorme não vale a pena, por exemplo.
     - Não inclua nenhuma formatação markdown ou texto adicional. Retorne uma resposta objetiva.
     - Não inclua na sua resposta que há a ausência de dados ou que seria necessário dados mais refinados. USE O BOM SENSO.
+    - Leve em consideração os benefícios a longo prazo.
 
     Contexto: ${context}
     Dados personalizados (ROI): ${roi}
