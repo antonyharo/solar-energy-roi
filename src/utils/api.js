@@ -2,10 +2,8 @@ import { GoogleGenerativeAI } from "@google/generative-ai";
 // import "dotenv/config";
 
 export const gemini = async (context, roi) => {
-    // const apiKey = process.env.GEMINI_KEY;
-    const genAI = new GoogleGenerativeAI(
-        ""
-    );
+    const apiKey = import.meta.env.VITE_GEMINI_KEY;
+    const genAI = new GoogleGenerativeAI(apiKey);
     const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
     const prompt = `
@@ -22,4 +20,3 @@ export const gemini = async (context, roi) => {
     const result = await model.generateContent(prompt);
     return result.response.text();
 };
-

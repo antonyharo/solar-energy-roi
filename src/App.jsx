@@ -226,8 +226,6 @@ const App = () => {
                 }),
             ]);
 
-            // 
-
             // Resposta consolidada
             const response = {
                 solar: {
@@ -281,18 +279,23 @@ const App = () => {
 
             {solarRoiData && hydroRoiData && (
                 <>
-                    <div className={styles.feedbackContainer}>
-                        {" "}
-                        <ChartComponent
-                            title="Comparação entre as duas"
-                            chartData={comparisonChartData}
-                            chartType={comparisonChartType}
-                            setChartType={setComparisonChartType}
+                    <ChartComponent
+                        title="Comparação entre as duas"
+                        chartData={comparisonChartData}
+                        chartType={comparisonChartType}
+                        setChartType={setComparisonChartType}
+                    />
+
+                    {geminiData && (
+                        <Feedback
+                            solar={geminiData.solar}
+                            hydro={geminiData.hydro}
+                            conclusion={geminiData.conclusion}
                         />
-                        {/* <Feedback /> */}
-                        <Feedback geminiData={geminiData} />
-                    </div>
+                    )}
+
                     <hr />
+
                     <section className={styles.chartsContainer}>
                         <ChartComponent
                             title="ROI Energia Solar"

@@ -1,6 +1,7 @@
 :root {
     --pros: hsl(144, 100%, 50%);
     --cons: hsl(0, 100%, 77%);
+    --conclusion: hsl(210, 70%, 70%);
 }
 
 .feedbackContainer {
@@ -9,7 +10,8 @@
 }
 
 .pros,
-.cons {
+.cons,
+.conclusion {
     padding: 1rem 2rem;
     border-left: 3px solid;
     display: flex;
@@ -20,7 +22,8 @@
 }
 
 .pros h2,
-.cons h2 {
+.cons h2,
+.conclusion h2 {
     display: flex;
     align-items: center;
     gap: 0.5rem;
@@ -34,13 +37,14 @@
     color: var(--cons);
 }
 
-.pros:hover,
-.cons:hover {
-    transform: translateX(0.2rem);
+.conclusion h2 {
+    color: var(--conclusion);
 }
 
-h2 {
-    margin: 0;
+.pros:hover,
+.cons:hover,
+.conclusion:hover {
+    transform: translateX(0.2rem);
 }
 
 .pros {
@@ -49,4 +53,8 @@ h2 {
 
 .cons {
     border-color: var(--cons);
+}
+
+.conclusion {
+    border-color: var(--conclusion);
 }
