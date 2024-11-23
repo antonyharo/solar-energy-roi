@@ -7,14 +7,14 @@ export const gemini = async (context, roi) => {
     const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
     const prompt = `
-    Você está sendo diretamente usado dentro de um website, gerando conteúdo que compara o uso da energia solar x energia hidrelétrica, retorne sua resposta sem nenhum tipo de formatação markdown.
-    Com base nos seguintes dados de ROI, gere, em até 40 palavras, ${context}:
+    Você está sendo diretamente usado dentro de um website, gerando conteúdo que compara o uso da energia solar x energia de outras fontes em residências, levando em consideração que os custos de instalação da energia hidrelétrica são indefinidos pois residências possuem apenas o circuito elétrico e consomem a energia hidrelétrica das grandes redes elétricas nacionais, pagando contas de energia, portanto, desconsidere dados vazios e retorne uma resposta assertiva, mesmo sem dados suficientes. Sua resposta não deve ter nenhum tipo de formatação markdown.
+    Com base nos seguintes dados personalizados ROI, gere, em até 40 palavras, ${context}:
     ROI: 
-      - Custo Inicial: ${roi.cost}
+      - Custo Inicial (apenas considere para a energia solar): ${roi.cost}
       - Economia Anual: ${roi.annualSavings}
       - Duração: ${roi.duration} anos
-      - Manutenção: ${roi.maintenance}
-      - Capacidade: ${roi.capacity} kWp
+      - Manutenção (apenas considere para a energia solar): ${roi.maintenance}
+      - Capacidade (apenas considere para a energia solar): ${roi.capacity} kWp
       - Taxa de Crescimento: ${roi.growthRate * 100}%`;
 
     const result = await model.generateContent(prompt);

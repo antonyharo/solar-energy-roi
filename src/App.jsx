@@ -30,16 +30,17 @@ ChartJS.register(
 );
 
 const App = () => {
-    const [area, setArea] = useState(20);
-    const [dailyConsumption, setDailyConsumption] = useState(30);
+    const [area, setArea] = useState(20); // m² disponíveis para painéis
+    const [dailyConsumption, setDailyConsumption] = useState(30); // kWh/dia da residência
     const [solarRoiData, setSolarRoiData] = useState(null);
     const [hydroRoiData, setHydroRoiData] = useState(null);
     const [solarChartType, setSolarChartType] = useState("line");
     const [hydroChartType, setHydroChartType] = useState("line");
     const [comparisonChartType, setComparisonChartType] = useState("line");
-    const [loadingGemini, setLoadingGemini] = useState(true);
+    const [loadingGemini, setLoadingGemini] = useState(false);
     const [geminiData, setGeminiData] = useState(null);
 
+    // Função para calcular ROI da energia solar
     const calculateROI = (
         initialCost,
         annualSavings,
@@ -61,6 +62,7 @@ const App = () => {
         return roiData;
     };
 
+    // Função para calcular ROI da energia hidrelétrica
     const calculateROIHydro = (annualCost, duration, growthRate = 0) => {
         const roiData = [];
         let cumulativeCost = 0;
@@ -68,34 +70,43 @@ const App = () => {
         for (let year = 1; year <= duration; year++) {
             if (year > 1) annualCost *= 1 + growthRate;
             cumulativeCost += annualCost;
-            const roi = -cumulativeCost;
+            const roi = -cumulativeCost; // ROI sempre negativo
             roiData.push({ year, roi });
         }
 
         return roiData;
     };
 
+    // Simulação principal
     const handleSimulate = async (event) => {
         event.preventDefault();
 
-        const solarIrradiation = 4.5;
-        const panelEfficiency = 0.18;
-        const systemLoss = 0.85;
-        const solarCostPerKWp = 6000;
-        const electricityCost = 0.9;
-        const solarMaintenancePerKWp = 200;
+        if (area <= 0 || dailyConsumption <= 0) {
+            alert("Área e consumo diário devem ser maiores que zero.");
+            return;
+        }
 
-        const solarCapacity = area * panelEfficiency * systemLoss;
-        const solarDailyGeneration = solarCapacity * solarIrradiation;
+        setLoadingGemini(true);
+
+        // Parâmetros gerais
+        const solarIrradiation = 4.5; // kWh/m²/dia
+        const panelEfficiency = 0.18; // Eficiência do painel
+        const systemLoss = 0.85; // Perdas no sistema
+        const solarCostPerKWp = 6000; // R$/kWp instalado
+        const electricityCost = 0.9; // R$/kWh
+        const solarMaintenancePerKWp = 200; // R$/ano por kWp
+        const solarDuration = 25; // Vida útil dos painéis (anos)
+        const solarGrowthRate = 0.02; // Inflação energética
+        const hydroGrowthRate = 0.08; // Inflação maior para a rede elétrica
+
+        // Cálculo da energia solar
+        const solarCapacity = area * panelEfficiency * systemLoss; // Capacidade instalada em kW
+        const solarDailyGeneration = solarCapacity * solarIrradiation; // Geração diária em kWh
         const solarAnnualSavings = Math.min(
-            solarDailyGeneration * 365 * electricityCost,
-            dailyConsumption * 365 * electricityCost
+            solarDailyGeneration * 365 * electricityCost, // Economia total
+            dailyConsumption * 365 * electricityCost // Limitada pelo consumo diário
         );
-        const solarCost = solarCapacity * solarCostPerKWp;
-        const solarDuration = 25;
-        const solarGrowthRate = 0.02;
-
-        // parametros
+        const solarCost = solarCapacity * solarCostPerKWp; // Investimento inicial
         const solarRoi = calculateROI(
             solarCost,
             solarAnnualSavings,
@@ -104,18 +115,20 @@ const App = () => {
             solarGrowthRate
         );
 
-        const hydroAnnualCost = dailyConsumption * 365 * electricityCost;
-        const hydroDuration = 25;
-        const hydroGrowthRate = 0.08;
+        // Cálculo da energia hidrelétrica (rede)
+        const hydroAnnualCost = dailyConsumption * 365 * electricityCost; // Conta anual de luz
+        const hydroDuration = 25; // Prazo de comparação
         const hydroRoi = calculateROIHydro(
             hydroAnnualCost,
             hydroDuration,
             hydroGrowthRate
         );
 
+        // Atualiza os estados
         setSolarRoiData(solarRoi);
         setHydroRoiData(hydroRoi);
 
+        // Simulação extra usando API fictícia `fetchGemini`
         await fetchGemini(
             {
                 cost: solarCost,
@@ -139,8 +152,8 @@ const App = () => {
             {
                 label: "ROI Energia Solar (R$)",
                 data: solarRoiData.map((d) => d.roi),
-                borderColor: "hsla(54, 100%, 50%, 0.8)",
-                backgroundColor: "hsla(54, 100%, 50%, 0.5)",
+                borderColor: "hsla(34, 100%, 50%, 0.8)",
+                backgroundColor: "hsla(34, 100%, 50%, 0.6)",
                 borderWidth: 4,
             },
         ],
@@ -166,8 +179,8 @@ const App = () => {
                 {
                     label: "ROI Energia Solar (R$)",
                     data: solarRoiData.map((d) => d.roi),
-                    borderColor: "hsla(54, 100%, 50%, 0.8)",
-                    backgroundColor: "hsla(54, 100%, 50%, 0.5)",
+                    borderColor: "hsla(34, 100%, 50%, 0.8)",
+                    backgroundColor: "hsla(34, 100%, 50%, 0.6)",
                     borderWidth: 4,
                 },
                 {
@@ -224,10 +237,10 @@ const App = () => {
                     "contras do uso da energia hidrelétrica",
                     formattedHydroData
                 ),
-                gemini("conclusão entre energia solar e hidrelétrica", {
-                    solar: formattedSolarData,
-                    hydro: formattedHydroData,
-                }),
+                gemini(
+                    "conclusão entre o uso da energia solar e o uso da energia hidrelétrica proveniente das grande redes nacionais",
+                    formattedSolarData
+                ),
             ]);
 
             // Resposta consolidada
