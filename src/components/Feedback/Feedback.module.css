@@ -6,14 +6,24 @@
 }
 
 .feedbackContainer {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
+    display: flex;
+    flex-direction: column;
+    /* grid-template-columns: repeat(2, 1fr); */
+    gap: 1rem;
+}
+
+.flexContainer {    
+    width: 100%;
+    display: flex;
+    /* align-items: center; */
     gap: 1rem;
 }
 
 .pros,
 .cons,
 .conclusion {
+    flex: 1;
+    width: 100%;
     padding: 2rem;
     border: 1px solid;
     /* border-left: 3px solid; */
@@ -89,14 +99,14 @@
 }
 
 @media (max-width: 767px) {
-    .feedbackContainer {
-        grid-template-columns: 1fr;
+    .flexContainer {
+        flex-direction: column;
     }
 
     .pros,
     .cons,
     .conclusion {
-        padding: 1rem; /* Reduzir o padding em telas pequenas */
+        padding: 1.4rem; /* Reduzir o padding em telas pequenas */
     }
 
     .pros h2,

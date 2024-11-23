@@ -6,7 +6,10 @@ function Footer() {
         <footer className={styles.footer}>
             <div className={styles.left}>
                 <Logo />
-                <p>© 2024 SolarMates. Todos os direitos reservados.</p>
+                <p>
+                    <strong>© 2024 SolarMates.</strong> Todos os direitos
+                    reservados.
+                </p>
                 <p className={styles.developers}>
                     Desenvolvido por{" "}
                     <a href="https://github.com/antonyharo">Antony Haro</a> e{" "}
