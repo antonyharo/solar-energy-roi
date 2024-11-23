@@ -1,6 +1,6 @@
 .chartContainer {
     display: grid;
-    gap: 1rem;
+    gap: 1.5rem;
 }
 
 .chartButtons {
@@ -11,10 +11,10 @@
 .chartButton,
 .activeButton {
     background-color: transparent;
-    color: white;
+    color: var(--text-color);
     font-weight: bold;
     padding: 0.3rem 2rem;
-    border: 2px solid white;
+    border: 1px solid var(--text-color);
     border-radius: 4px;
     cursor: pointer;
     transition: 0.15s ease-out;
@@ -23,17 +23,18 @@
 .chartButton:hover,
 .activeButton:hover {
     transform: translateY(-0.2rem);
-    background-color: white;
-    color: black;
+    background-color: var(--text-color);
+    color: white;
 }
 
 .activeButton {
-    background-color: white;
-    color: black;
+    background-color: var(--text-color);
+    color: var(--primary-color);
 }
 
-canvas {
+.chartContainer canvas {
     padding: 2rem;
-    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: -1px 1px 4px var(--shadow);
+    background: var(--primary-bgc);
     border-radius: 4px;
 }

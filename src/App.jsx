@@ -37,6 +37,7 @@ const App = () => {
     const [solarChartType, setSolarChartType] = useState("line");
     const [hydroChartType, setHydroChartType] = useState("line");
     const [comparisonChartType, setComparisonChartType] = useState("line");
+    const [loadingGemini, setLoadingGemini] = useState(true);
     const [geminiData, setGeminiData] = useState(null);
 
     const calculateROI = (
@@ -138,9 +139,9 @@ const App = () => {
             {
                 label: "ROI Energia Solar (R$)",
                 data: solarRoiData.map((d) => d.roi),
-                borderColor: "hsla(54, 100%, 66%, 0.7)",
-                backgroundColor: "hsla(54, 100%, 66%, 0.3)",
-                borderWidth: 2,
+                borderColor: "hsla(54, 100%, 50%, 0.8)",
+                backgroundColor: "hsla(54, 100%, 50%, 0.5)",
+                borderWidth: 4,
             },
         ],
     };
@@ -151,9 +152,9 @@ const App = () => {
             {
                 label: "ROI Hidrelétrica (R$)",
                 data: hydroRoiData.map((d) => d.roi),
-                borderColor: "hsla(212, 100%, 66%, 0.7)",
-                backgroundColor: "hsla(212, 100%, 66%, 0.3)",
-                borderWidth: 2,
+                borderColor: "hsla(212, 100%, 66%, 0.8)",
+                backgroundColor: "hsla(212, 100%, 66%, 0.5)",
+                borderWidth: 4,
             },
         ],
     };
@@ -165,16 +166,16 @@ const App = () => {
                 {
                     label: "ROI Energia Solar (R$)",
                     data: solarRoiData.map((d) => d.roi),
-                    borderColor: "hsla(54, 100%, 66%, 0.7)",
-                    backgroundColor: "hsla(54, 100%, 66%, 0.3)",
-                    borderWidth: 2,
+                    borderColor: "hsla(54, 100%, 50%, 0.8)",
+                    backgroundColor: "hsla(54, 100%, 50%, 0.5)",
+                    borderWidth: 4,
                 },
                 {
                     label: "ROI Hidrelétrica (R$)",
                     data: hydroRoiData.map((d) => d.roi),
-                    borderColor: "hsla(212, 100%, 66%, 0.7)",
-                    backgroundColor: "hsla(212, 100%, 66%, 0.3)",
-                    borderWidth: 2,
+                    borderColor: "hsla(212, 100%, 50%, 0.8)",
+                    backgroundColor: "hsla(212, 100%, 50%, 0.5)",
+                    borderWidth: 4,
                 },
             ],
         };
@@ -246,75 +247,93 @@ const App = () => {
         } catch (error) {
             console.error("Erro ao buscar dados do Gemini:", error);
             throw error; // Propaga o erro para manipulação em outro lugar, se necessário
+        } finally {
+            setLoadingGemini(false);
         }
     };
 
     return (
-        <div className={styles.home}>
+        <>
             <Header />
+            <div className={styles.home}>
+                <div className={styles.textContainer}>
+                    <h1>
+                        Simulador de ROI de{" "}
+                        <span className={styles.solar}>Energia Solar</span> x{" "}
+                        <span className={styles.hydro}>Hidrelétrica</span>
+                    </h1>
+                    <p>
+                        Através deste simulador, você pode comparar o retorno
+                        sobre investimento (ROI) de sistemas de energia solar e
+                        hidrelétrica. Com base nos dados fornecidos sobre área
+                        disponível e consumo diário, será possível entender como
+                        cada opção pode influenciar seus custos ao longo do
+                        tempo.
+                    </p>
+                </div>
 
-            <div className={styles.textContainer}>
-                <h1>
-                    Simulador de ROI de <span>Energia Solar</span> x{" "}
-                    <span>Hidrelétrica</span>
-                </h1>
-                <p>
-                    Através deste simulador, você pode comparar o retorno sobre
-                    investimento (ROI) de sistemas de energia solar e
-                    hidrelétrica. Com base nos dados fornecidos sobre área
-                    disponível e consumo diário, será possível entender como
-                    cada opção pode influenciar seus custos ao longo do tempo.
-                </p>
+                <Form
+                    area={area}
+                    setArea={setArea}
+                    dailyConsumption={dailyConsumption}
+                    setDailyConsumption={setDailyConsumption}
+                    handleSimulate={handleSimulate}
+                />
+
+                <hr />
+
+                {solarRoiData && hydroRoiData && (
+                    <>
+                        <ChartComponent
+                            title="Comparação entre as duas fontes de energia"
+                            chartData={comparisonChartData}
+                            chartType={comparisonChartType}
+                            setChartType={setComparisonChartType}
+                        />
+
+                        {loadingGemini ? (
+                            <p>Carregando prós e contras...</p>
+                        ) : (
+                            <Feedback
+                                solar={geminiData.solar}
+                                hydro={geminiData.hydro}
+                                conclusion={geminiData.conclusion}
+                            />
+                        )}
+
+                        <hr />
+
+                        <section className={styles.chartsContainer}>
+                            <ChartComponent
+                                title="ROI Energia Solar"
+                                chartData={solarChartData}
+                                chartType={solarChartType}
+                                setChartType={setSolarChartType}
+                            />
+                            <ChartComponent
+                                title="ROI Energia Hidrelétrica"
+                                chartData={hydroChartData}
+                                chartType={hydroChartType}
+                                setChartType={setHydroChartType}
+                            />
+                        </section>
+                    </>
+                )}
+
+                <section>
+                    <h2>
+                        Ficou curioso de como é o funcionamento da energia
+                        solar?
+                    </h2>
+                    <p>
+                        Aqui você pode encontrar todas as informações e
+                        curiosidades de dessa fonte de energia natural e
+                        abundante em todo o planeta, acesse: link
+                    </p>
+                </section>
             </div>
-
-            <Form
-                area={area}
-                setArea={setArea}
-                dailyConsumption={dailyConsumption}
-                setDailyConsumption={setDailyConsumption}
-                handleSimulate={handleSimulate}
-            />
-
-            <hr />
-
-            {solarRoiData && hydroRoiData && (
-                <>
-                    <ChartComponent
-                        title="Comparação entre as duas"
-                        chartData={comparisonChartData}
-                        chartType={comparisonChartType}
-                        setChartType={setComparisonChartType}
-                    />
-
-                    {geminiData && (
-                        <Feedback
-                            solar={geminiData.solar}
-                            hydro={geminiData.hydro}
-                            conclusion={geminiData.conclusion}
-                        />
-                    )}
-
-                    <hr />
-
-                    <section className={styles.chartsContainer}>
-                        <ChartComponent
-                            title="ROI Energia Solar"
-                            chartData={solarChartData}
-                            chartType={solarChartType}
-                            setChartType={setSolarChartType}
-                        />
-                        <ChartComponent
-                            title="ROI Energia Hidrelétrica"
-                            chartData={hydroChartData}
-                            chartType={hydroChartType}
-                            setChartType={setHydroChartType}
-                        />
-                    </section>
-                </>
-            )}
-
             <Footer />
-        </div>
+        </>
     );
 };
 

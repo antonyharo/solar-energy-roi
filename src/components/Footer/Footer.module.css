@@ -1,13 +1,16 @@
 .footer {
-    background-color: hsla(0, 0%, 0%, 0.15);
+    width: 100%;
+    background-color: var(--primary-bgc);
     display: flex;
-    justify-content: space-evenly;
+    justify-content: center;
     align-items: center;
-    padding: 1rem;
+    gap: 4rem;
+    padding: 2rem;
+    margin-top: 7%;
 }
 
 .footer a {
-    color: lightblue;
+    color: hsl(195, 88%, 29%);
     text-decoration: none;
 }
 
@@ -18,14 +21,14 @@
 }
 
 .developers {
-    color: hsla(0, 0%, 100%, 0.203);
+    color: var(--light-text);
 }
 
 .footer hr {
     border: 0;
     height: 8rem;
     width: 1px;
-    background-color: white;
+    background-color: var(--light-text);
 }
 
 .right {
@@ -34,7 +37,7 @@
 }
 
 .right div {
-    display: grid;                                                                                                  
+    display: grid;
     gap: 0.4rem;
 }
 

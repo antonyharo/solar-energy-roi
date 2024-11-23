@@ -1,7 +1,7 @@
 :root {
-    --pros: hsl(144, 100%, 50%);
-    --cons: hsl(0, 100%, 77%);
-    --conclusion: hsl(210, 70%, 70%);
+    --pros: hsl(144, 100%, 40%);
+    --cons: hsl(0, 100%, 67%);
+    --conclusion: hsl(210, 70%, 60%);
 }
 
 .feedbackContainer {

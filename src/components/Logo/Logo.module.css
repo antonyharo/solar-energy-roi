@@ -5,7 +5,7 @@ h1 {
 }
 
 .logo svg {
-    color: yellow;
+    color: var(--primary-color);
     animation: rotate360 10s infinite linear;
 }
 
