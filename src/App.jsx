@@ -211,7 +211,10 @@ const App = () => {
                 hydroConsResponse,
                 conclusionResponse,
             ] = await Promise.all([
-                gemini("prós do uso da energia solar", formattedSolarData),
+                gemini(
+                    "prós do uso da energia solar (sem necessidade de colocar 'Energia solar:' ao inciar a resposta)",
+                    formattedSolarData
+                ),
                 gemini("contras do uso da energia solar", formattedSolarData),
                 gemini(
                     "prós do uso da energia hidrelétrica",
@@ -280,7 +283,7 @@ const App = () => {
                     handleSimulate={handleSimulate}
                 />
 
-                <hr />
+                {/* <hr /> */}
 
                 {solarRoiData && hydroRoiData && (
                     <>
@@ -301,8 +304,6 @@ const App = () => {
                             />
                         )}
 
-                        <hr />
-
                         <section className={styles.chartsContainer}>
                             <ChartComponent
                                 title="ROI Energia Solar"
@@ -320,15 +321,22 @@ const App = () => {
                     </>
                 )}
 
-                <section>
+                <section className={styles.moreInfo}>
                     <h2>
                         Ficou curioso de como é o funcionamento da energia
                         solar?
                     </h2>
                     <p>
-                        Aqui você pode encontrar todas as informações e
-                        curiosidades de dessa fonte de energia natural e
-                        abundante em todo o planeta, acesse: link
+                        Neste espaço, você encontrará uma vasta gama de
+                        informações, curiosidades e descobertas fascinantes
+                        sobre essa fonte de energia renovável, natural e
+                        abundante em todo o planeta. A energia solar tem um
+                        enorme potencial para transformar nosso futuro, e aqui,
+                        você poderá explorar artigos completos, pesquisas e
+                        análises sobre como ela pode ser utilizada de forma mais
+                        eficiente e sustentável. Para se aprofundar no tema,
+                        acesse nossos <a href="#">Artigos</a> e saiba mais sobre
+                        as vantagens e inovações dessa fonte de energia.
                     </p>
                 </section>
             </div>

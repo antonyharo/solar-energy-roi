@@ -3,10 +3,10 @@
     display: flex;
     align-items: stretch;
     justify-content: space-between;
-    gap: 1.7rem;
-    background-color: var(--primary-bgc);
-    box-shadow: -1px 1px 4px var(--shadow);
-    padding: 1rem 2rem;
+    gap: 2rem;
+    /* background-color: var(--primary-bgc); */
+    /* box-shadow: -1px 1px 4px var(--shadow); */
+    /* padding: 1rem 2rem; */
     border-radius: 4px;
 }
 
@@ -14,13 +14,13 @@
     width: 100%;
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    gap: 1.2rem;
+    gap: 1.7rem;
 }
 
 .inputContainer {
     display: flex;
     flex-direction: column;
-    gap: 0.4rem;
+    gap: 1rem;
 }
 
 .label {
@@ -36,15 +36,15 @@
     padding: 0.2rem 0.7rem;
     background-color: transparent;
     border: none;
-    border-bottom: 3px solid #555;
+    border-bottom: 1px solid #555;
     color: #999;
     outline: none;
-    transition: 0.5s;
+    transition: 0.2s;
 }
 
-/* .inputContainer input:focus {
+.inputContainer input:focus {
     border-color: var(--primary-color);
-} */
+}
 
 .submitButton {
     background-color: transparent;

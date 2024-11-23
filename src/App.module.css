@@ -44,3 +44,12 @@
     grid-template-columns: repeat(auto-fit, minmax(40vw, 1fr));
     gap: 2.4rem;
 }
+
+.moreInfo {
+    display: grid;
+    gap: 1.4rem;
+}
+
+.moreInfo p  {
+    color: var(--light-text);
+}

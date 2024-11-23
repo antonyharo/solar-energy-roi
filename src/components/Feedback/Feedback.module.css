@@ -1,24 +1,28 @@
 :root {
-    --pros: hsl(144, 100%, 40%);
-    --cons: hsl(0, 100%, 67%);
+    --pros: hsl(144, 60%, 45%);
+    --cons: hsl(0, 57%, 60%);
     --conclusion: hsl(210, 70%, 60%);
+    --hover-h2: hsla(0, 0%, 100%, 0.4);
 }
 
 .feedbackContainer {
     display: grid;
-    gap: 2rem;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
 }
 
 .pros,
 .cons,
 .conclusion {
-    padding: 1rem 2rem;
-    border-left: 3px solid;
+    padding: 2rem;
+    border: 1px solid;
+    /* border-left: 3px solid; */
+    border-radius: 4px;
     display: flex;
     flex-direction: column;
-    gap: 0.5rem;
-    transition: 0.1s ease-out;
-    color: #7a7a7a;
+    gap: 0.7rem;
+    transition: 0.2s ease-out;
+    color: var(--light-text);
 }
 
 .pros h2,
@@ -27,6 +31,7 @@
     display: flex;
     align-items: center;
     gap: 0.5rem;
+    transition: 0.2s ease-out;
 }
 
 .pros h2 {
@@ -41,20 +46,62 @@
     color: var(--conclusion);
 }
 
-.pros:hover,
-.cons:hover,
-.conclusion:hover {
-    transform: translateX(0.2rem);
-}
-
 .pros {
     border-color: var(--pros);
+}
+
+.pros:hover {
+    background-color: var(--pros);
+    color: white;
+
+    h2 {
+        padding-left: 0.3rem;
+        color: var(--hover-h2);
+    }
 }
 
 .cons {
     border-color: var(--cons);
 }
 
+.cons:hover {
+    background-color: var(--cons);
+    color: white;
+
+    h2 {
+        padding-left: 0.3rem;
+        color: var(--hover-h2);
+    }
+}
+
 .conclusion {
     border-color: var(--conclusion);
+}
+
+.conclusion:hover {
+    background-color: var(--conclusion);
+    color: white;
+
+    h2 {
+        padding-left: 0.3rem;
+        color: var(--hover-h2);
+    }
+}
+
+@media (max-width: 767px) {
+    .feedbackContainer {
+        grid-template-columns: 1fr;
+    }
+
+    .pros,
+    .cons,
+    .conclusion {
+        padding: 1rem; /* Reduzir o padding em telas pequenas */
+    }
+
+    .pros h2,
+    .cons h2,
+    .conclusion h2 {
+        font-size: 1.2rem; /* Ajustar tamanho da fonte em telas menores */
+    }
 }

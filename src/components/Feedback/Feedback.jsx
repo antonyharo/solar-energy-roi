@@ -33,7 +33,7 @@ function Feedback({ solar, hydro, conclusion }) {
                 <p>{hydro.cons || "Nenhum dado disponível."}</p>
             </div>
 
-            <div className={`${styles.feedback} ${styles.conclusion}`}>
+            <div className={`${styles.feedback} ${styles.conclusion}`} style={{gridColumn: "span 2"}}>
                 <h2>
                     Conclusão entre o uso das duas fontes
                     <TbAlignBoxBottomCenterFilled />
