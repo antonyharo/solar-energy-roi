@@ -31,7 +31,7 @@ ChartJS.register(
 
 const App = () => {
     const [area, setArea] = useState(20); // m² disponíveis para painéis
-    const [dailyConsumption, setDailyConsumption] = useState(30); // kWh/dia da residência
+    const [dailyConsumption, setDailyConsumption] = useState(8); // kWh/dia da residência
     const [solarRoiData, setSolarRoiData] = useState(null);
     const [hydroRoiData, setHydroRoiData] = useState(null);
     const [solarChartType, setSolarChartType] = useState("line");
@@ -79,7 +79,7 @@ const App = () => {
 
     // Simulação principal
     const handleSimulate = async (event) => {
-        event.preventDefault();
+        event?.preventDefault();
 
         if (area <= 0 || dailyConsumption <= 0) {
             alert("Área e consumo diário devem ser maiores que zero.");
@@ -88,7 +88,6 @@ const App = () => {
 
         setLoadingGemini(true);
 
-        // Parâmetros gerais
         const solarIrradiation = 4.5; // kWh/m²/dia
         const panelEfficiency = 0.18; // Eficiência do painel
         const systemLoss = 0.85; // Perdas no sistema
@@ -99,7 +98,6 @@ const App = () => {
         const solarGrowthRate = 0.02; // Inflação energética
         const hydroGrowthRate = 0.08; // Inflação maior para a rede elétrica
 
-        // Cálculo da energia solar
         const solarCapacity = area * panelEfficiency * systemLoss; // Capacidade instalada em kW
         const solarDailyGeneration = solarCapacity * solarIrradiation; // Geração diária em kWh
         const solarAnnualSavings = Math.min(
@@ -115,7 +113,6 @@ const App = () => {
             solarGrowthRate
         );
 
-        // Cálculo da energia hidrelétrica (rede)
         const hydroAnnualCost = dailyConsumption * 365 * electricityCost; // Conta anual de luz
         const hydroDuration = 25; // Prazo de comparação
         const hydroRoi = calculateROIHydro(
@@ -124,28 +121,83 @@ const App = () => {
             hydroGrowthRate
         );
 
-        // Atualiza os estados
         setSolarRoiData(solarRoi);
         setHydroRoiData(hydroRoi);
 
-        // Simulação extra usando API fictícia `fetchGemini`
         await fetchGemini(
             {
-                cost: solarCost,
-                annualSavings: solarAnnualSavings,
-                duration: solarDuration,
-                maintenance: solarMaintenancePerKWp * solarCapacity,
-                capacity: solarCapacity,
-                growthRate: solarGrowthRate,
-                dailyConsumption: dailyConsumption,
+                solarCost: solarCost,
+                solarAnnualSavings: solarAnnualSavings,
+                solarDuration: solarDuration,
+                solarMaintenance: solarMaintenancePerKWp * solarCapacity,
+                solarCapacity: solarCapacity,
+                solarGrowthRate: solarGrowthRate,
+                solarPanelsArea: area,  
             },
             {
-                annualCost: hydroAnnualCost,
-                duration: hydroDuration,
-                growthRate: hydroGrowthRate,
-                dailyConsumption: dailyConsumption,
+                hydroAnnualCost: hydroAnnualCost,
+                hydroDuration: hydroDuration,
+                hydroGrowthRate: hydroGrowthRate,
             }
         );
+    };
+
+    const fetchGemini = async (solarData, hydroData) => {
+        try {
+            const [
+                solarProsResponse,
+                solarConsResponse,
+                hydroProsResponse,
+                hydroConsResponse,
+                conclusionResponse,
+            ] = await Promise.all([
+                gemini(
+                    "prós do uso da energia solar (sem necessidade de colocar 'Energia solar:' ao inciar a resposta)",
+                    solarData,
+                    dailyConsumption
+                ),
+                gemini(
+                    "contras do uso da energia solar",
+                    solarData,
+                    dailyConsumption
+                ),
+                gemini(
+                    "prós do uso da energia hidrelétrica",
+                    hydroData,
+                    dailyConsumption
+                ),
+                gemini(
+                    "contras do uso da energia hidrelétrica",
+                    hydroData,
+                    dailyConsumption
+                ),
+                gemini(
+                    "conclusão entre o uso da energia solar e o uso da energia hidrelétrica proveniente das grande redes nacionais",
+                    { solar: solarData, hydro: hydroData },
+                    dailyConsumption
+                ),
+            ]);
+
+            const response = {
+                solar: {
+                    pros: solarProsResponse,
+                    cons: solarConsResponse,
+                },
+                hydro: {
+                    pros: hydroProsResponse,
+                    cons: hydroConsResponse,
+                },
+                conclusion: conclusionResponse,
+            };
+
+            setGeminiData(response);
+            console.log(response);
+        } catch (error) {
+            console.error("Erro ao buscar dados do Gemini:", error);
+            throw error;
+        } finally {
+            setLoadingGemini(false);
+        }
     };
 
     const solarChartData = solarRoiData && {
@@ -195,50 +247,7 @@ const App = () => {
             ],
         };
 
-    const fetchGemini = async (solarData, hydroData) => {
-        try {
-            // Solicitações assíncronas
-            const [
-                solarProsResponse,
-                solarConsResponse,
-                hydroProsResponse,
-                hydroConsResponse,
-                conclusionResponse,
-            ] = await Promise.all([
-                gemini(
-                    "prós do uso da energia solar (sem necessidade de colocar 'Energia solar:' ao inciar a resposta)",
-                    solarData
-                ),
-                gemini("contras do uso da energia solar", solarData),
-                gemini("prós do uso da energia hidrelétrica", hydroData),
-                gemini("contras do uso da energia hidrelétrica", hydroData),
-                gemini(
-                    "conclusão entre o uso da energia solar e o uso da energia hidrelétrica proveniente das grande redes nacionais",
-                    solarData
-                ),
-            ]);
-
-            const response = {
-                solar: {
-                    pros: solarProsResponse,
-                    cons: solarConsResponse,
-                },
-                hydro: {
-                    pros: hydroProsResponse,
-                    cons: hydroConsResponse,
-                },
-                conclusion: conclusionResponse,
-            };
-
-            setGeminiData(response);
-            console.log(response);
-        } catch (error) {
-            console.error("Erro ao buscar dados do Gemini:", error);
-            throw error;
-        } finally {
-            setLoadingGemini(false);
-        }
-    };
+    // useEffect(() => handleSimulate(), []);
 
     return (
         <>
@@ -267,8 +276,6 @@ const App = () => {
                     setDailyConsumption={setDailyConsumption}
                     handleSimulate={handleSimulate}
                 />
-
-                {/* <hr /> */}
 
                 {solarRoiData && hydroRoiData && (
                     <>

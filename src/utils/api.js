@@ -1,7 +1,7 @@
 import { GoogleGenerativeAI } from "@google/generative-ai";
 // import "dotenv/config";
 
-export const gemini = async (context, roi) => {
+export const gemini = async (context, roi, dailyConsumption) => {
     const apiKey = import.meta.env.VITE_GEMINI_API;
     const genAI = new GoogleGenerativeAI(apiKey);
     const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
@@ -13,20 +13,17 @@ export const gemini = async (context, roi) => {
     - Não mencione ou considere a instalação de usinas hidrelétricas em residências.
     - Considere que as residências usam energia hidrelétrica diretamente da rede elétrica.
     - A análise deve focar apenas no contexto dado e não fugir do tema do consumo residencial.
+    - Considere os dados ROI, ainda que falte infomações, use o bom senso para responder.
+    - Avalie o alto investimento x consumo diário, 8kWh diários para um custo elevadíssimo de instalação de paíneis solares em uma área enorme não vale a pena, por exemplo.
     - Não inclua nenhuma formatação markdown ou texto adicional. Retorne uma resposta objetiva.
+    - Não inclua na sua resposta que há a ausência de dados ou que seria necessário dados mais refinados. USE O BOM SENSO.
 
     Contexto: ${context}
     Dados personalizados (ROI): ${roi}
+    Consumo diário (kWh): ${dailyConsumption}
 
-    Gere uma resposta em até 40 palavras.`;
+    Gere uma resposta em 40 palavras.`;
 
     const result = await model.generateContent(prompt);
     return result.response.text();
 };
-
-// - Custo Inicial (apenas considere para a energia solar): ${roi.cost}
-// - Economia Anual: ${roi.annualSavings}
-// - Duração: ${roi.duration} anos
-// - Manutenção (apenas considere para a energia solar): ${roi.maintenance}
-// - Capacidade (apenas considere para a energia solar): ${roi.capacity} kWp
-// - Taxa de Crescimento: ${roi.growthRate * 100}%`;
