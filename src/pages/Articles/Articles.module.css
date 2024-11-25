@@ -17,6 +17,7 @@
 .articlesContainer section h2 {
     font-size: 2.5rem;
     margin-bottom: 1rem;
+    color: #FFBF00;
 }
 
 .articlesContainer section p {
@@ -37,7 +38,7 @@
 
 .articlesContainer ul li {
     padding: 0.5rem 1rem;
-    border-left: 0.4rem solid black;
+    border-left: 0.4rem solid #FFBF00;
     border-radius: 0 0.4rem 0.4rem 0;
     box-shadow: 0 0 1rem #00000020;
     text-align: justify;
@@ -46,12 +47,21 @@
 }
 
 .articlesContainer ul li h3 {
-    color: black;
+    color: #FFBF00;
     margin-bottom: 0.6rem;
+    transition: 0.2s ease-out;
 }
 
 .articlesContainer ul li:hover {
-    transform: translateX(0.6rem);
+    background-color: #FFBF00;
+    p {
+        color: white;
+        transition: 0.2s;
+    }
+    h3 {
+        padding-left: 0.3rem;
+        color: #fff;
+    }
 }
 
 .articleContent {

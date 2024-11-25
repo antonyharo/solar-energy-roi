@@ -12,6 +12,7 @@
     /* background-color: hsla(60, 100%, 50%, 0.9); */
     border-bottom: 1px solid var(--primary-color) ;
     overflow: hidden;
+    z-index: 1;
 }
 
 .header ul {

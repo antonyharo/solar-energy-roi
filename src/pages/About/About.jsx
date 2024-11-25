@@ -1,48 +1,54 @@
 import fellipeCastro from "../../assets/fellipe-castro.png";
 import antonyHaro from "../../assets/antony-haro.png";
+import about from "../../assets/about-illustration.svg";
 
 import styles from "./About.module.css";
 
 function About() {
     return (
         <div className={styles.aboutContainer}>
-            <section>
-                <h2>Sobre nós</h2>
-                <p>
-                    Bem-vindo ao SolarMates, o simulador que conecta você ao
-                    futuro da energia sustentável! Nosso objetivo é claro:
-                    facilitar a compreensão, o acesso e a adesão à energia
-                    solar, mostrando como essa tecnologia pode beneficiar não
-                    apenas o meio ambiente, mas também o seu bolso.
-                </p>
-                <p>
-                    Em um mundo onde sustentabilidade é cada vez mais urgente,
-                    acreditamos que todos merecem acesso a ferramentas simples e
-                    poderosas que desmistifiquem as escolhas sobre fontes de
-                    energia. É por isso que criamos o SolarMates, um simulador
-                    desenvolvido para ser intuitivo, eficiente e acessível a
-                    todos, independentemente de conhecimento técnico.
-                </p>
-                <p>
-                    No SolarMates, nossa missão é democratizar o acesso à
-                    tecnologia e colocar o poder da decisão nas suas mãos.
-                    Sabemos que a transição para a energia solar pode parecer
-                    complicada, cheia de cálculos e incertezas, mas estamos aqui
-                    para mudar isso. Nosso simulador permite que você compare
-                    facilmente os benefícios da energia solar com outras fontes,
-                    como a hidrelétrica, analisando fatores como custo inicial,
-                    economia ao longo do tempo, manutenção e retorno sobre o
-                    investimento (ROI).
-                </p>
-                <p>
-                    Com uma interface amigável e baseada em dados confiáveis, o
-                    SolarMates ajuda você a visualizar o impacto financeiro e
-                    ambiental de suas escolhas. Quer saber quanto você
-                    economizaria com energia solar? Em quanto tempo seu
-                    investimento se pagaria? Ou qual é a melhor alternativa para
-                    o seu consumo? Nós respondemos a essas perguntas com clareza
-                    e transparência.
-                </p>
+            <section id={styles.aboutUs}>
+                <div className={styles.textContainer}>
+                    <h2>Sobre nós</h2>
+                    <p>
+                        Bem-vindo ao SolarMates, o simulador que conecta você ao
+                        futuro da energia sustentável! Nosso objetivo é claro:
+                        facilitar a compreensão, o acesso e a adesão à energia
+                        solar, mostrando como essa tecnologia pode beneficiar
+                        não apenas o meio ambiente, mas também o seu bolso.
+                    </p>
+                    <p>
+                        Em um mundo onde sustentabilidade é cada vez mais
+                        urgente, acreditamos que todos merecem acesso a
+                        ferramentas simples e poderosas que desmistifiquem as
+                        escolhas sobre fontes de energia. É por isso que criamos
+                        o SolarMates, um simulador desenvolvido para ser
+                        intuitivo, eficiente e acessível a todos,
+                        independentemente de conhecimento técnico.
+                    </p>
+                    <p>
+                        No SolarMates, nossa missão é democratizar o acesso à
+                        tecnologia e colocar o poder da decisão nas suas mãos.
+                        Sabemos que a transição para a energia solar pode
+                        parecer complicada, cheia de cálculos e incertezas, mas
+                        estamos aqui para mudar isso. Nosso simulador permite
+                        que você compare facilmente os benefícios da energia
+                        solar com outras fontes, como a hidrelétrica, analisando
+                        fatores como custo inicial, economia ao longo do tempo,
+                        manutenção e retorno sobre o investimento (ROI).
+                    </p>
+                    <p>
+                        Com uma interface amigável e baseada em dados
+                        confiáveis, o SolarMates ajuda você a visualizar o
+                        impacto financeiro e ambiental de suas escolhas. Quer
+                        saber quanto você economizaria com energia solar? Em
+                        quanto tempo seu investimento se pagaria? Ou qual é a
+                        melhor alternativa para o seu consumo? Nós respondemos a
+                        essas perguntas com clareza e transparência.
+                    </p>
+                </div>
+
+                <img src={about} alt="Ilustração sobre nós" />
             </section>
 
             <section>
@@ -61,26 +67,37 @@ function About() {
                 <h2>Por Que Escolher o SolarMates?</h2>
                 <ul>
                     <li>
-                        <h3>Facilidade de Uso:</h3> Desenvolvemos uma plataforma
-                        intuitiva que qualquer pessoa pode usar. Sem
-                        complicações, sem barreiras técnicas.
+                        <h3>Facilidade de Uso:</h3>{" "}
+                        <p>
+                            Desenvolvemos uma plataforma intuitiva que qualquer
+                            pessoa pode usar. Sem complicações, sem barreiras
+                            técnicas.
+                        </p>
                     </li>
                     <li>
-                        <h3>Transparência:</h3> Nossos cálculos são baseados em
-                        dados reais e atualizados, para que você tenha confiança
-                        nas informações apresentadas.
+                        <h3>Transparência:</h3>{" "}
+                        <p>
+                            Nossos cálculos são baseados em dados reais e
+                            atualizados, para que você tenha confiança nas
+                            informações apresentadas.
+                        </p>
                     </li>
                     <li>
                         <h3>Democratização da Tecnologia:</h3>
-                        Tornamos acessível o que antes era restrito a
-                        especialistas, ajudando você a explorar os benefícios da
-                        energia solar de forma simples e prática.
+                        <p>
+                            Tornamos acessível o que antes era restrito a
+                            especialistas, ajudando você a explorar os
+                            benefícios da energia solar de forma simples e
+                            prática.
+                        </p>
                     </li>
                     <li>
-                        <h3>Sustentabilidade:</h3> Ao incentivar a adoção de
-                        fontes renováveis, contribuímos para um futuro mais
-                        verde e sustentável para todos. Faça Parte da Revolução
-                        Solar
+                        <h3>Sustentabilidade:</h3>{" "}
+                        <p>
+                            Ao incentivar a adoção de fontes renováveis,
+                            contribuímos para um futuro mais verde e sustentável
+                            para todos. Faça Parte da Revolução Solar
+                        </p>
                     </li>
                 </ul>
                 <p>
