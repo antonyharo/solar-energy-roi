@@ -1,13 +1,31 @@
-.articlesContainer {
+.articles {
     min-height: 100vh;
     width: 100%;
+    margin-top: 8%;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     gap: 2rem;
     padding: 4rem;
-    margin-top: 6%;
+}
+
+.articles h1 {
+    font-size: 3.4em;
+}
+
+.articles hr {
+    height: 2px;
+    border: 0;
+    width: 75%;
+    background-color: lightgray;
+}
+
+.articlesContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
 
 .articlesContainer section {
@@ -15,53 +33,79 @@
 }
 
 .articlesContainer section h2 {
-    font-size: 2.5rem;
+    font-size: 2em;
     margin-bottom: 1rem;
-    color: #FFBF00;
+    margin-top: 3rem;
+    color: hsl(210, 20%, 20%);
 }
 
 .articlesContainer section p {
     color: var(--light-text);
-    text-align: justify;
-    text-indent: 1rem;
-    margin-bottom: 0.8rem;
 }
 
-.articlesContainer ul {
+.info {
+    margin-bottom: 1rem;
+}
+
+.articlesContainer .firstSectionContainer {
     margin-bottom: 2rem;
     list-style: none;
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    align-items: stretch;
-    gap: 1rem;
+    gap: 1.4rem;
 }
 
-.articlesContainer ul li {
-    padding: 0.5rem 1rem;
-    border-left: 0.4rem solid #FFBF00;
+.articlesContainer p {
+    transition: 0.2s ease-out;
+}
+
+.articlesContainer li {
+    padding: 0.9rem 1rem;
+    border-left: 0.2rem solid var(--primary-color);
     border-radius: 0 0.4rem 0.4rem 0;
-    box-shadow: 0 0 1rem #00000020;
-    text-align: justify;
     color: var(--light-text);
     transition: 0.2s;
 }
 
-.articlesContainer ul li h3 {
-    color: #FFBF00;
+.firstSectionContainer {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+}
+
+.articlesContainer h3 {
+    color: var(--primary-color);
     margin-bottom: 0.6rem;
     transition: 0.2s ease-out;
 }
 
-.articlesContainer ul li:hover {
-    background-color: #FFBF00;
+.articlesContainer .firstSectionContainer li:hover {
+    background-color: var(--primary-color);
     p {
         color: white;
         transition: 0.2s;
     }
     h3 {
-        padding-left: 0.3rem;
+        padding-left: 0.7rem;
         color: #fff;
     }
+}
+
+.secondarySection {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+    list-style: none;
+}
+
+.secondarySection li {
+    padding: 1rem;
+    border: 1px dashed gray;
+    border-radius: 4px;
+}
+
+.secondarySection li:hover {
+    border-color: var(--primary-color);
+    transform: translateY(-0.2rem);
 }
 
 .articleContent {
@@ -91,4 +135,8 @@
     object-fit: cover;
     border-radius: 1rem;
     border: 0.2rem solid var(--light-text);
+}
+
+.lastSection p {
+    margin-bottom: 1rem;
 }

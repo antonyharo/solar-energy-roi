@@ -7,6 +7,8 @@ import styles from "./About.module.css";
 function About() {
     return (
         <div className={styles.aboutContainer}>
+            <h1>SolarMates: Iluminando o Futuro com Energia Sustentável ☀️</h1>
+            <hr />
             <section id={styles.aboutUs}>
                 <div className={styles.textContainer}>
                     <h2>Sobre nós</h2>
