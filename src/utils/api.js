@@ -4,7 +4,7 @@ import { GoogleGenerativeAI } from "@google/generative-ai";
 export const gemini = async (context, roi, dailyConsumption) => {
     const apiKey = import.meta.env.VITE_GEMINI_API;
     const genAI = new GoogleGenerativeAI(apiKey);
-    const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+    const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
 
     const prompt = `
     Você está gerando conteúdo para um site que compara energia solar com outras fontes de energia para uso residencial. 
